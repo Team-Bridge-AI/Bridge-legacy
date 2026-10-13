@@ -13,8 +13,10 @@
 <meta property="og:image" content="https://buildbridges.co/assets/webzero-appicon-dark.png">
 <link rel="icon" href="assets/webzero-appicon-dark.png">
 <style>.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-button[title="Export video"]{display:none!important}
-[data-omelette-chrome]{box-sizing:border-box}</style>
+[data-omelette-chrome]{display:none!important}
+svg[data-om-exportable-video-with-duration-secs]{box-shadow:none!important}
+/* the film's pulse ring is absolutely positioned and paints over the CTA link; lift the link above it */
+svg foreignObject a{position:relative;z-index:1}</style>
 <script>try{localStorage.removeItem('animstage-v3:t')}catch(e){}</script>
 <script src="./support.js"></script>
 </head>
@@ -24,6 +26,7 @@ button[title="Export video"]{display:none!important}
   <p>The web was built for humans. Its new users are agents. More than half of web requests now come from machines, not humans (Cloudflare, August 2026).</p>
   <p>Bridge AI is now Webzero. Infrastructure for the agentic web.</p>
   <p><a href="https://webzero.ai">Visit webzero.ai</a></p>
+  <p>Press Space to pause or resume the film.</p>
 </main>
 <x-dc>
 <helmet>
@@ -34,7 +37,7 @@ button[title="Export video"]{display:none!important}
 <script>window.OM_PLAYBACK = '{"mode":"loop"}';</script>
 <script>window.TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{"motionEditor":true}/*EDITMODE-END*/;</script>
 </helmet>
-<div style="width:100vw;height:100vh">
+<div style="width:100vw;height:100vh;height:100dvh">
   <x-import component-from-global-scope="WebzeroFilmV4" from="./animations-v3.jsx ./tweaks-panel.jsx ./webzero-film-v4.jsx" hint-size="100%,100%"></x-import>
 </div>
 </x-dc>
