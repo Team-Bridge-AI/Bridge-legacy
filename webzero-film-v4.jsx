@@ -103,8 +103,10 @@ function Wordmark({ T, CUES, slotRef }) {
 }
 
 function Mission({ T, CUES }) {
+  const tl = useTimeline();
   const s = CUES.Mission;
   if (T < s) return null;
+  const ended = !tl.playing && tl.time >= tl.duration - 0.01;
   const a = MOTION.enter(T, s + 0.3, 0.9), cta = MOTION.enter(T, s + 1.2, 0.8);
   const ph = (((T - s - 2) % 1.6) + 1.6) % 1.6 / 1.6, on = T > s + 2 ? 1 : 0;
   return (
@@ -117,6 +119,11 @@ function Mission({ T, CUES }) {
           <span style={{ width: 48, height: 48, borderRadius: '50%', background: PAPER, color: INK, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 26, transform: `translateX(${4 * Math.sin((T - s) * 4) * on}px)` }}>→</span>
         </a>
       </div>
+      <button type="button" onClick={(e) => { e.stopPropagation(); tl.setTime(0); tl.setPlaying(true); }} onPointerDown={(e) => e.stopPropagation()} onKeyDown={(e) => e.stopPropagation()}
+        style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: -20, padding: '14px 28px', borderRadius: 999, background: 'transparent', color: INK, border: `1.5px solid ${INK}`, fontFamily: SANS, fontWeight: 500, fontSize: 26, cursor: 'pointer', pointerEvents: 'auto', opacity: ended ? 1 : 0, visibility: ended ? 'visible' : 'hidden', transition: ended ? 'opacity 0.6s ease' : 'none' }}>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /></svg>
+        Repeat
+      </button>
     </div>
   );
 }
@@ -129,7 +136,7 @@ function Film() {
   const toInk = MOTION.draw(T, CUES.Proof, 0.9);
   const field = toPaper > 0 ? mix(INK, PAPER, toPaper) : toInk > 0 ? mix(OCHRE, INK, toInk) : mix(CLAY, OCHRE, toOchre);
   const topInk = toPaper > 0.5 || toInk < 0.5 ? INK : PAPER;
-  const fade = MOTION.leave(T, authoredTotal - 0.7, 0.7);
+  const fade = 1; // published page plays once and holds the last frame, so no end fade
   const intro = MOTION.enter(T, 0, 0.6);
   const rootRef = React.useRef(null), slotRef = React.useRef(null);
   const lastT = React.useRef(T), loops = React.useRef(0), run = React.useRef({ from0: false, ok: true });
